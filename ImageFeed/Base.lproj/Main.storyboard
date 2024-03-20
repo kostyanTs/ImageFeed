@@ -6,6 +6,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -44,6 +45,14 @@
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <state key="normal" image="yesLike"/>
                                                 </button>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SfU-Ml-GSi">
+                                                    <rect key="frame" x="16" y="274" width="361" height="30"/>
+                                                    <color key="backgroundColor" name="YP BlackBluer"/>
+                                                    <color key="tintColor" systemColor="labelColor"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="2VX-Vx-Xap"/>
+                                                    </constraints>
+                                                </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="26 августа 2022" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I5a-Ws-G7J">
                                                     <rect key="frame" x="24" y="280.33333333333331" width="103" height="15.666666666666686"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
@@ -53,9 +62,12 @@
                                             </subviews>
                                             <color key="backgroundColor" name="YP Black (iOS)"/>
                                             <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="SfU-Ml-GSi" secondAttribute="bottom" constant="4" id="2oE-US-AVU"/>
                                                 <constraint firstAttribute="bottom" secondItem="I5a-Ws-G7J" secondAttribute="bottom" constant="12" id="LhR-VT-CFf"/>
                                                 <constraint firstAttribute="bottom" secondItem="f94-o2-gB0" secondAttribute="bottom" constant="4" id="NKa-WQ-XWR"/>
                                                 <constraint firstItem="I5a-Ws-G7J" firstAttribute="leading" secondItem="ZG5-Nt-7NK" secondAttribute="leading" constant="24" id="Qtb-hd-euq"/>
+                                                <constraint firstItem="SfU-Ml-GSi" firstAttribute="leading" secondItem="ZG5-Nt-7NK" secondAttribute="leading" constant="16" id="Yv2-5o-3mn"/>
+                                                <constraint firstAttribute="trailing" secondItem="SfU-Ml-GSi" secondAttribute="trailing" constant="16" id="d4F-Ac-llH"/>
                                                 <constraint firstAttribute="trailing" secondItem="f94-o2-gB0" secondAttribute="trailing" constant="16" id="eQx-Xo-lBR"/>
                                                 <constraint firstItem="bjh-LN-znv" firstAttribute="top" secondItem="ZG5-Nt-7NK" secondAttribute="top" constant="4" id="jq3-bA-hSB"/>
                                                 <constraint firstItem="f94-o2-gB0" firstAttribute="leading" secondItem="ZG5-Nt-7NK" secondAttribute="leading" constant="16" id="lXj-d2-tkB"/>
@@ -104,8 +116,14 @@
         <namedColor name="YP Black (iOS)">
             <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <namedColor name="YP BlackBluer">
+            <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="0.10000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="YP White (iOS)">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="labelColor">
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>
