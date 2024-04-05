@@ -26,6 +26,7 @@ class SingleImageViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     
     override func viewDidLoad() {
+        super.viewDidLoad()
 //        scrollView.alwaysBounceVertical = true
 //        scrollView.alwaysBounceVertical = true
         singleImageView.image = image
@@ -64,7 +65,7 @@ class SingleImageViewController: UIViewController {
     
     @IBAction func didTapActivityButton(_ sender: Any) {
         let items = [singleImageView.image]
-        let ac = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        let ac = UIActivityViewController(activityItems: items as [Any], applicationActivities: nil)
         present(ac, animated: true)
     }
 }

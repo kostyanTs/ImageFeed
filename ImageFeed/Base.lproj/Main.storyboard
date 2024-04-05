@@ -196,6 +196,9 @@
                         <tabBarAppearance key="standardAppearance">
                             <color key="backgroundColor" name="YP Black (iOS)"/>
                         </tabBarAppearance>
+                        <tabBarAppearance key="scrollEdgeAppearance">
+                            <color key="backgroundColor" name="YP Black (iOS)"/>
+                        </tabBarAppearance>
                     </tabBar>
                     <connections>
                         <segue destination="RQZ-KX-UQh" kind="relationship" relationship="viewControllers" id="bYB-Kq-j90"/>
@@ -213,78 +216,20 @@
                     <view key="view" contentMode="scaleToFill" id="juw-I8-w2k">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ProfilePhoto" translatesAutoresizingMaskIntoConstraints="NO" id="p9b-51-U8R">
-                                <rect key="frame" x="16" y="80" width="70" height="70"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="70" id="RVA-cU-YDh"/>
-                                    <constraint firstAttribute="height" constant="70" id="VGm-p6-grG"/>
-                                </constraints>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GNd-Ys-dJg">
-                                <rect key="frame" x="374" y="103" width="24" height="24"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="24" id="LCw-yJ-10t"/>
-                                    <constraint firstAttribute="height" constant="24" id="z2u-bO-CSx"/>
-                                </constraints>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" backgroundImage="ExitLogout"/>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Екатерина Новикова" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bcb-7G-2J0">
-                                <rect key="frame" x="16" y="158" width="382" height="27.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
-                                <color key="textColor" name="YP White (iOS)"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@ekaterina_nov" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QoZ-UI-g15">
-                                <rect key="frame" x="16" y="193.5" width="382" height="16"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <color key="textColor" name="YP Grey (iOS)"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello, world!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Yw-gi-ke0">
-                                <rect key="frame" x="16" y="217.5" width="382" height="16"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <color key="textColor" name="YP White (iOS)"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
                         <viewLayoutGuide key="safeArea" id="1Jq-Ze-8mX"/>
                         <color key="backgroundColor" name="YP Black (iOS)"/>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="7Yw-gi-ke0" secondAttribute="trailing" constant="16" id="79z-ku-LBs"/>
-                            <constraint firstAttribute="trailing" secondItem="QoZ-UI-g15" secondAttribute="trailing" constant="16" id="BXL-QI-I64"/>
-                            <constraint firstItem="QoZ-UI-g15" firstAttribute="top" secondItem="bcb-7G-2J0" secondAttribute="bottom" constant="8" id="BkY-di-QmE"/>
-                            <constraint firstAttribute="trailing" secondItem="GNd-Ys-dJg" secondAttribute="trailing" constant="16" id="DxO-mQ-184"/>
-                            <constraint firstItem="p9b-51-U8R" firstAttribute="top" secondItem="1Jq-Ze-8mX" secondAttribute="top" constant="32" id="IRe-dd-1Md"/>
-                            <constraint firstItem="p9b-51-U8R" firstAttribute="leading" secondItem="juw-I8-w2k" secondAttribute="leading" constant="16" id="JKB-DV-WYy"/>
-                            <constraint firstItem="bcb-7G-2J0" firstAttribute="top" secondItem="p9b-51-U8R" secondAttribute="bottom" constant="8" id="RZU-BK-5vd"/>
-                            <constraint firstItem="7Yw-gi-ke0" firstAttribute="leading" secondItem="QoZ-UI-g15" secondAttribute="leading" id="U3v-yh-QXQ"/>
-                            <constraint firstItem="GNd-Ys-dJg" firstAttribute="top" secondItem="1Jq-Ze-8mX" secondAttribute="top" constant="55" id="afA-A0-HsH"/>
-                            <constraint firstItem="QoZ-UI-g15" firstAttribute="leading" secondItem="bcb-7G-2J0" secondAttribute="leading" id="eOD-Se-JJR"/>
-                            <constraint firstItem="7Yw-gi-ke0" firstAttribute="top" secondItem="QoZ-UI-g15" secondAttribute="bottom" constant="8" id="guv-gH-mud"/>
-                            <constraint firstItem="bcb-7G-2J0" firstAttribute="leading" secondItem="p9b-51-U8R" secondAttribute="leading" id="ism-z0-gXh"/>
-                            <constraint firstAttribute="trailing" secondItem="bcb-7G-2J0" secondAttribute="trailing" constant="16" id="uHF-x4-eEg"/>
-                        </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="tab_profile_active" id="JdB-Hr-bTQ"/>
-                    <connections>
-                        <outlet property="commentLabel" destination="7Yw-gi-ke0" id="9lF-cX-bsr"/>
-                        <outlet property="emailLabel" destination="QoZ-UI-g15" id="Lmx-Ry-ENd"/>
-                        <outlet property="logoutButton" destination="GNd-Ys-dJg" id="JCk-9a-BKw"/>
-                        <outlet property="nameLabel" destination="bcb-7G-2J0" id="hOX-FK-dnX"/>
-                        <outlet property="profilePhotoImageView" destination="p9b-51-U8R" id="Hzu-Kg-0mq"/>
-                    </connections>
+                    <tabBarItem key="tabBarItem" title="" image="tab_profile_active" id="JdB-Hr-bTQ">
+                        <color key="badgeColor" name="YP Black (iOS)"/>
+                    </tabBarItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a5D-V4-4yp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="46" y="679"/>
+            <point key="canvasLocation" x="44.927536231884062" y="678.34821428571422"/>
         </scene>
     </scenes>
     <resources>
         <image name="0" width="1600" height="1059"/>
-        <image name="ExitLogout" width="24" height="24"/>
-        <image name="ProfilePhoto" width="70" height="70"/>
         <image name="backwardButton" width="24" height="24"/>
         <image name="sharingButton" width="30" height="30"/>
         <image name="tab_editorial_active" width="30" height="30"/>
@@ -298,9 +243,6 @@
         </namedColor>
         <namedColor name="YP BlackBluer">
             <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="0.10000000149011612" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="YP Grey (iOS)">
-            <color red="0.68235294117647061" green="0.68627450980392157" blue="0.70588235294117652" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="YP White (iOS)">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
