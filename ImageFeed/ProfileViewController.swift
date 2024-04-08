@@ -66,7 +66,7 @@ class ProfileViewController: UIViewController {
     }
     
     func addLogoutButton() {
-        var button = UIButton.systemButton(
+        let button = UIButton.systemButton(
             with: UIImage(named: "ExitLogout")!,
             target: self,
             action: #selector(Self.didTapButton))

@@ -16,8 +16,6 @@ class SingleImageViewController: UIViewController {
             guard let image = image else { return }
             singleImageView.frame.size = image.size
             rescaleAndCenterImageInScrollView(image: image)
-//            scrollView.alwaysBounceVertical = true
-//            scrollView.alwaysBounceVertical = true
         }
     }
     
@@ -27,8 +25,6 @@ class SingleImageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        scrollView.alwaysBounceVertical = true
-//        scrollView.alwaysBounceVertical = true
         singleImageView.image = image
         scrollView.minimumZoomScale = 1
         scrollView.maximumZoomScale = 1.5
@@ -75,21 +71,4 @@ extension SingleImageViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         singleImageView
     }
-    
-//    func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
-//        guard let image = singleImageView.image else { return }
-//        rescaleAndCenterImageInScrollView(image: image)
-//    }
-////
-//    func scrollViewDidZoom(_ scrollView: UIScrollView) {
-//        guard let image = singleImageView.image else { return }
-//        rescaleAndCenterImageInScrollView(image: image)
-//    }
-//
-//    func scrollViewDidChangeAdjustedContentInset(_ scrollView: UIScrollView) {
-//        scrollView.alwaysBounceVertical = true
-//        scrollView.alwaysBounceVertical = true
-//        guard let image = singleImageView.image else { return }
-//        rescaleAndCenterImageInScrollView(image: image)
-//    }
 }
