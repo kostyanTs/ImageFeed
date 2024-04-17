@@ -7,9 +7,10 @@
 
 import UIKit
 
-class AuthViewController: UIViewController, WebViewViewControllerDelegate {
+final class AuthViewController: UIViewController, WebViewViewControllerDelegate {
 
-    let ShowWebViewSegueIdentifier = "ShowWebView"
+    private let ShowWebViewSegueIdentifier = "ShowWebView"
+    private let oauth2Service = OAuth2Service.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,7 +35,16 @@ class AuthViewController: UIViewController, WebViewViewControllerDelegate {
         }
     }
     
-    func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {}
+    func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
+        OAuth2Service().fetchOAuthToken(code: code) { result in
+            switch result {
+            case .success(let accessToken):
+                OAuth2TokenStorage().token = accessToken
+            case .failure(let failure):
+                print(failure)
+            }
+        }
+    }
     
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
         dismiss(animated: true)
