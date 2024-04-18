@@ -7,10 +7,14 @@
 
 import UIKit
 
-final class AuthViewController: UIViewController, WebViewViewControllerDelegate {
+protocol AuthViewControllerDellegate {
+    func didAuthenticate(_ vc: AuthViewController)
+}
 
-    private let ShowWebViewSegueIdentifier = "ShowWebView"
+final class AuthViewController: UIViewController {
+
     private let oauth2Service = OAuth2Service.shared
+    var delegate: AuthViewControllerDellegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,18 +29,23 @@ final class AuthViewController: UIViewController, WebViewViewControllerDelegate 
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == ShowWebViewSegueIdentifier {
+        if segue.identifier == Segue.showWebViewSegueIdentifier {
             guard
                 let webViewViewController = segue.destination as? WebViewViewController
-            else { fatalError("Failed to prepare for \(ShowWebViewSegueIdentifier)") }
+            else { fatalError("Failed to prepare for \(Segue.showWebViewSegueIdentifier)") }
             webViewViewController.delegate = self
         } else {
             super.prepare(for: segue, sender: sender)
         }
     }
+}
+
+extension AuthViewController: WebViewViewControllerDelegate {
     
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
+        vc.dismiss(animated: true)
         OAuth2Service().fetchOAuthToken(code: code) { result in
+            
             switch result {
             case .success(let accessToken):
                 OAuth2TokenStorage().token = accessToken
@@ -49,6 +58,6 @@ final class AuthViewController: UIViewController, WebViewViewControllerDelegate 
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
         dismiss(animated: true)
     }
-    
-    
 }
+
+

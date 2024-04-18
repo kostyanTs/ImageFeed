@@ -15,3 +15,9 @@ enum Constants {
     static let accessScope: String = "public+read_user+write_likes"
     static let defaultBaseURL = URL(string: "https://api.unsplash.com")!
 }
+
+enum Segue {
+    static let showAuthenticationScreenSegueIdentifier = "ShowAuthenticationSegueIdentifier"
+    static let showWebViewSegueIdentifier = "ShowWebView"
+    static let showSingleImageSegueIdentifier = "ShowSingleImage"
+}
