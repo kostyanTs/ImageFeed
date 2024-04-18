@@ -8,7 +8,7 @@
 import UIKit
 
 protocol AuthViewControllerDellegate {
-    func didAuthenticate(_ vc: AuthViewController)
+    func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String)
 }
 
 final class AuthViewController: UIViewController {
@@ -43,16 +43,17 @@ final class AuthViewController: UIViewController {
 extension AuthViewController: WebViewViewControllerDelegate {
     
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        vc.dismiss(animated: true)
-        OAuth2Service().fetchOAuthToken(code: code) { result in
-            
-            switch result {
-            case .success(let accessToken):
-                OAuth2TokenStorage().token = accessToken
-            case .failure(let failure):
-                print(failure)
-            }
-        }
+        delegate?.authViewController(self, didAuthenticateWithCode: code)
+//        vc.dismiss(animated: true)
+//        OAuth2Service().fetchOAuthToken(code: code) { result in
+//
+//            switch result {
+//            case .success(let accessToken):
+//                OAuth2TokenStorage().token = accessToken
+//            case .failure(let failure):
+//                print(failure)
+//            }
+//        }
     }
     
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {

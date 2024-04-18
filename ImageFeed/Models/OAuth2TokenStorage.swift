@@ -19,7 +19,7 @@ final class OAuth2TokenStorage {
         get {
             guard let data = usersDefaults.data(forKey: Keys.token.rawValue),
                   let token = try?JSONDecoder().decode(String.self, from: data) else {
-                return ""
+                return nil
             }
             return token
         }

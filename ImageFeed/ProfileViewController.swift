@@ -81,5 +81,14 @@ class ProfileViewController: UIViewController {
     }
     
     @objc
-    private func didTapButton() {}
+    private func didTapButton() {
+        OAuth2TokenStorage().token = ""
+        guard let window = UIApplication.shared.windows.first else {
+            assertionFailure("Invalid window configuration")
+            return
+        }
+        let tabBarController = UIStoryboard(name: "Main", bundle: .main)
+            .instantiateViewController(withIdentifier: "NavigationController")
+        window.rootViewController = tabBarController
+    }
 }

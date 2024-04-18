@@ -36,11 +36,11 @@ final class SplashViewController: UIViewController {
 
 extension SplashViewController: AuthViewControllerDellegate {
     
-    func didAuthenticate(_ vc: AuthViewController) {
+    func didAuthenticate(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
         vc.dismiss(animated: true)
         switchToTabBarController()
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Segue.showAuthenticationScreenSegueIdentifier {
             guard
@@ -57,3 +57,26 @@ extension SplashViewController: AuthViewControllerDellegate {
            }
     }
 }
+
+extension SplashViewController {
+    func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
+        dismiss(animated: true) { [weak self] in
+            guard let self = self else { return }
+            self.fetchOAuthToken(code)
+        }
+    }
+
+    private func fetchOAuthToken(_ code: String) {
+        OAuth2Service().fetchOAuthToken(code: code) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success:
+                self.switchToTabBarController()
+            case .failure:
+                // TODO [Sprint 11]
+                break
+            }
+        }
+    }
+}
+
