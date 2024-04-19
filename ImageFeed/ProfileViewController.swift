@@ -82,7 +82,7 @@ class ProfileViewController: UIViewController {
     
     @objc
     private func didTapButton() {
-        OAuth2TokenStorage().token = ""
+        OAuth2TokenStorage().token = nil
         guard let window = UIApplication.shared.windows.first else {
             assertionFailure("Invalid window configuration")
             return
