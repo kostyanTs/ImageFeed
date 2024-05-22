@@ -7,16 +7,23 @@
 
 import Foundation
 
+enum AuthServiceError: Error {
+    case invalidRequest
+}
+
 final class OAuth2Service {
     
     private enum NetworkError: Error {
         case codeError
     }
     
-    static let shared = OAuth2Service() // 1
+    private let urlSession = URLSession.shared
+    private var task: URLSessionTask?
+    private var lastCode: String?
+    static let shared = OAuth2Service()
 //    private init() {}
         
-    func makeOAuthTokenRequest(code: String) -> URLRequest {
+    func makeOAuthTokenRequest(code: String) -> URLRequest? {
         let baseURL = URL(string: "https://unsplash.com")!
         let url = URL(
             string: "/oauth/token"
@@ -34,8 +41,23 @@ final class OAuth2Service {
         
     func fetchOAuthToken(code: String, completion: @escaping (Result<String,Error>) -> Void) {
         
-        let request = makeOAuthTokenRequest(code: code)
-        let task = URLSession.shared.data(for: request){ result in
+        assert(Thread.isMainThread)
+        guard lastCode != code else {
+            completion(.failure(AuthServiceError.invalidRequest))
+            return
+        }
+        task?.cancel()
+        lastCode = code
+        
+        guard
+            let request = makeOAuthTokenRequest(code: code)          // 11
+        else {
+            completion(.failure(AuthServiceError.invalidRequest))
+            return
+        }
+        
+        let task = urlSession.data(for: request){ [weak self] result in
+            DispatchQueue.main.async {
                 switch result {
                 case .success(let data):
                     do {
@@ -53,9 +75,10 @@ final class OAuth2Service {
                     print("Error: error of requesting: \(error)")
                 }
             }
-            
-            task.resume()
         }
+        self.task = task
+        task.resume()
+    }
 }
     
 
