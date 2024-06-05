@@ -40,7 +40,7 @@ final class OAuth2Service {
     }
         
     func fetchOAuthToken(code: String, completion: @escaping (Result<String,Error>) -> Void) {
-        
+        print(code)
         assert(Thread.isMainThread)
         guard lastCode != code else {
             completion(.failure(AuthServiceError.invalidRequest))
@@ -50,21 +50,25 @@ final class OAuth2Service {
         lastCode = code
         
         guard
-            let request = makeOAuthTokenRequest(code: code)          // 11
+            let request = makeOAuthTokenRequest(code: code)
         else {
             completion(.failure(AuthServiceError.invalidRequest))
             return
         }
         
-        let task = urlSession.data(for: request){ [weak self] result in
+        let task = urlSession.objectTask(for: request){ (result: Result<OAuthTokenResponseBody, Error>) in
             DispatchQueue.main.async {
+                print(result)
                 switch result {
-                case .success(let data):
+                case .success(let decodedData):
                     do {
-                        let oAuthToken = try JSONDecoder().decode(OAuthTokenResponseBody.self, from:data)
-                        guard let accessToken = oAuthToken.access_token else {
+
+
+                        guard let accessToken = decodedData.access_token else {
                             fatalError("Error: can`t decode token!")
                         }
+                        self.task = nil
+                        self.lastCode = nil
                         completion(.success(accessToken))
                     } catch {
                         completion(.failure(error))

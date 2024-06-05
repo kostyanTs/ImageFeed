@@ -6,20 +6,31 @@
 //
 
 import UIKit
-//import ProgressHUD
+import ProgressHUD
 
 final class SplashViewController: UIViewController {
     
     private let storage = OAuth2TokenStorage()
+    private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
+    
+    private var logoImageView = UIImageView()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        addLogo(imageView: logoImageView)
+        view.backgroundColor = UIColor(named: "YP Black (iOS)")
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         let token = storage.token
         if token != nil {
-            switchToTabBarController()
+            guard let token = OAuth2TokenStorage().token else { return }
+            fetchProfile(token)
         } else {
-            performSegue(withIdentifier: Segue.showAuthenticationScreenSegueIdentifier, sender: nil)
+            switchToAuthView()
         }
     }
     
@@ -34,51 +45,90 @@ final class SplashViewController: UIViewController {
     }
 }
 
+extension SplashViewController {
+    private func addLogo(imageView: UIImageView) {
+        imageView.image = UIImage(named: "VectorImage")
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(imageView)
+        NSLayoutConstraint.activate([
+            imageView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor)
+        ])
+    }
+    
+    private func switchToAuthView() {
+        let storyboard = UIStoryboard(name: "Main", bundle: .main)
+        guard let viewController: UINavigationController = storyboard.instantiateViewController(withIdentifier: "UINavigationController") as? UINavigationController,
+              let authViewController = viewController.viewControllers[0] as? AuthViewController
+        else {
+            assertionFailure("Failed to prepare for \(Segue.showAuthenticationScreenSegueIdentifier)")
+            return
+        }
+        authViewController.delegate = self
+        viewController.modalPresentationStyle = .fullScreen
+        present(viewController, animated: true)
+        }
+}
+
 
 
 extension SplashViewController: AuthViewControllerDellegate {
     
-    func didAuthenticate(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
-        vc.dismiss(animated: true)
-        switchToTabBarController()
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == Segue.showAuthenticationScreenSegueIdentifier {
-            guard
-                let navigationController = segue.destination as? UINavigationController,
-                let viewController = navigationController.viewControllers[0] as? AuthViewController
-            else {
-                assertionFailure("Failed to prepare for \(Segue.showAuthenticationScreenSegueIdentifier)")
-                return
-            }
-            viewController.delegate = self
-            
-        } else {
-            super.prepare(for: segue, sender: sender)
+    func didAuthenticate() {
+        self.dismiss(animated: true) { [weak self] in
+            guard let self = self else {return }
+            guard let token = storage.token else { return }
+            self.fetchProfile(token)
         }
+        switchToTabBarController()
     }
 }
 
 extension SplashViewController {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
         dismiss(animated: true) { [weak self] in
-//            ProgressHUD.animate()
             guard let self = self else { return }
             self.fetchOAuthToken(code)
         }
     }
     
     private func fetchOAuthToken(_ code: String) {
+        UIBlockingProgressHUD.show()
         OAuth2Service().fetchOAuthToken(code: code) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
             guard let self = self else { return }
-//            ProgressHUD.dismiss()
             switch result {
                 case .success(let successToken):
                     storage.token = successToken
-                    self.switchToTabBarController()
+                    self.didAuthenticate()
                 case .failure:
                     break
+            }
+        }
+    }
+    
+    private func fetchProfile(_ token: String) {
+        UIBlockingProgressHUD.show()
+        profileService.fetchProfile(token) { result in
+            UIBlockingProgressHUD.dismiss()
+            switch result {
+            case .success(let profileResult):
+                guard let username = profileResult.username else { return }
+                self.fetchProfileImage(token, username)
+            case .failure:
+                break
+            }
+        }
+    }
+    
+    private func fetchProfileImage(_ token: String, _ username: String) {
+        profileImageService.fetchProfileImage(token, username) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(_):
+                self.switchToTabBarController()
+            case .failure(_):
+                break
             }
         }
     }
