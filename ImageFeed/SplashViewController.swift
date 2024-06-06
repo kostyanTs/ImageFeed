@@ -58,7 +58,7 @@ extension SplashViewController {
     
     private func switchToAuthView() {
         let storyboard = UIStoryboard(name: "Main", bundle: .main)
-        guard let viewController: UINavigationController = storyboard.instantiateViewController(withIdentifier: "UINavigationController") as? UINavigationController,
+        guard let viewController: UINavigationController = storyboard.instantiateViewController(withIdentifier: "NavigationController") as? UINavigationController,
               let authViewController = viewController.viewControllers[0] as? AuthViewController
         else {
             assertionFailure("Failed to prepare for \(Segue.showAuthenticationScreenSegueIdentifier)")
