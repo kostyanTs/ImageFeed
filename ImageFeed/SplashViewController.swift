@@ -10,11 +10,14 @@ import ProgressHUD
 
 final class SplashViewController: UIViewController {
     
-    private let storage = OAuth2TokenStorage()
+    private let oauth2TokenStorage = OAuth2TokenStorage.shared
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
+    private let oauthService = OAuth2Service.shared
     
-    private var logoImageView = UIImageView()
+    weak var authViewController: AuthViewController?
+    
+    private let logoImageView = UIImageView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,9 +28,9 @@ final class SplashViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        let token = storage.token
+        let token = oauth2TokenStorage.token
         if token != nil {
-            guard let token = OAuth2TokenStorage().token else { return }
+            guard let token = oauth2TokenStorage.token else { return }
             fetchProfile(token)
         } else {
             switchToAuthView()
@@ -67,7 +70,7 @@ extension SplashViewController {
         authViewController.delegate = self
         viewController.modalPresentationStyle = .fullScreen
         present(viewController, animated: true)
-        }
+    }
 }
 
 
@@ -77,7 +80,7 @@ extension SplashViewController: AuthViewControllerDellegate {
     func didAuthenticate() {
         self.dismiss(animated: true) { [weak self] in
             guard let self = self else {return }
-            guard let token = storage.token else { return }
+            guard let token = oauth2TokenStorage.token else { return }
             self.fetchProfile(token)
         }
         switchToTabBarController()
@@ -86,22 +89,24 @@ extension SplashViewController: AuthViewControllerDellegate {
 
 extension SplashViewController {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
-        dismiss(animated: true) { [weak self] in
+        vc.dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
-            self.fetchOAuthToken(code)
+            self.fetchOAuthToken(code, vc)
         }
     }
     
-    private func fetchOAuthToken(_ code: String) {
+    private func fetchOAuthToken(_ code: String,_ vc: AuthViewController ) {
         UIBlockingProgressHUD.show()
-        OAuth2Service().fetchOAuthToken(code: code) { [weak self] result in
+        oauthService.fetchOAuthToken(code: code) { [weak self] result in
             UIBlockingProgressHUD.dismiss()
             guard let self = self else { return }
             switch result {
                 case .success(let successToken):
-                    storage.token = successToken
+                    oauth2TokenStorage.token = successToken
                     self.didAuthenticate()
-                case .failure:
+                case .failure(let error):
+                authViewController?.showAlert(vc)
+                print("[SplashViewController]: \(error)")
                     break
             }
         }

@@ -12,6 +12,7 @@ final class ProfileService {
     static let shared = ProfileService()
     
     private let urlSession = URLSession.shared
+    private let oauth2TokenStorage = OAuth2TokenStorage.shared
     private var task: URLSessionTask?
     private(set) var profileInfo: ProfileResult?
     
@@ -30,7 +31,7 @@ final class ProfileService {
     func fetchProfile(_ token: String, completion: @escaping (Result<ProfileResult, Error>) -> Void) {
         assert(Thread.isMainThread)
         guard task == nil else { return }
-        guard let token = OAuth2TokenStorage().token else {
+        guard let token = oauth2TokenStorage.token else {
             completion(.failure(AuthServiceError.invalidRequest))
             return
         }
@@ -43,16 +44,11 @@ final class ProfileService {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let decodedData):
-                    do {
                         self.profileInfo = decodedData
+                    self.task = nil
                         completion(.success(decodedData))
-                           
-                    }
-                    catch {
-                        completion(.failure(error))
-                        print("[ProfileService] \(error)")
-                    }
                 case .failure(let error):
+                    self.task = nil
                     completion(.failure(error))
                     print("[ProfileService]: \(error)")
                 }

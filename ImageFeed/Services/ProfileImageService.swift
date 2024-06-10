@@ -12,6 +12,7 @@ final class ProfileImageService {
     static let shared = ProfileImageService()
     
     private let urlSession = URLSession.shared
+    private let oauth2TokenStorage = OAuth2TokenStorage.shared
     private var task: URLSessionTask?
 
     private(set) var profileImage: ProfileImage?
@@ -36,7 +37,7 @@ final class ProfileImageService {
     func fetchProfileImage(_ token: String, _ username: String, completion: @escaping (Result<ProfileImage, Error>) -> Void) {
         assert(Thread.isMainThread)
         guard task == nil else { return }
-        guard let token = OAuth2TokenStorage().token else {
+        guard let token = oauth2TokenStorage.token else {
             completion(.failure(AuthServiceError.invalidRequest))
             return
         }
@@ -49,20 +50,16 @@ final class ProfileImageService {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let decodedData):
-                    do {
-                        self.profileImage = decodedData
-                        completion(.success(decodedData))
-                        NotificationCenter.default
-                            .post(
-                                name: ProfileImageService.didChangeNotification,
-                                object: self,
-                                userInfo: ["URL": decodedData])
-                    }
-                    catch {
-                        completion(.failure(error))
-                        print("Error: error of requesting: \(error)")
-                    }
+                    self.profileImage = decodedData
+                    self.task = nil
+                    completion(.success(decodedData))
+                    NotificationCenter.default
+                        .post(
+                            name: ProfileImageService.didChangeNotification,
+                            object: self,
+                            userInfo: ["URL": decodedData])
                 case .failure(let error):
+                    self.task = nil
                     completion(.failure(error))
                     print("Error: error of requesting: \(error)")
                 }

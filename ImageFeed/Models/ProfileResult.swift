@@ -7,8 +7,6 @@
 
 import Foundation
 
-private let usersDefaults = UserDefaults.standard
-
 private enum Keys: String {
     case token
 }

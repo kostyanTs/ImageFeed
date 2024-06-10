@@ -9,8 +9,6 @@ import UIKit
 
 protocol AuthViewControllerDellegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String)
-//    func didAuthenticate(_ vc: AuthViewController, didAuthenticateWithCode code: String)
-    
 }
 
 final class AuthViewController: UIViewController {

@@ -8,9 +8,9 @@
 import UIKit
 import Kingfisher
 
-class ProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController {
     
-    private var profilePhotoImageView = UIImageView()
+    private let profilePhotoImageView = UIImageView()
     private let nameLabel = UILabel()
     private let usernameLabel = UILabel()
     private let commentLabel = UILabel()
@@ -18,6 +18,7 @@ class ProfileViewController: UIViewController {
     
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
+    private let oauth2TokenStorage = OAuth2TokenStorage.shared
     private var profileImageServiceObserver: NSObjectProtocol?
     
     override func viewDidLoad() {
@@ -82,7 +83,6 @@ class ProfileViewController: UIViewController {
     }
     
     func addNameLabel(label: UILabel) {
-//        label.text = "Екатерина Новикова"
         label.text = "Екатерина Новикова"
         label.textColor = UIColor(named: "YP White (iOS)")
         label.font = .systemFont(ofSize: 23, weight: .bold)
@@ -129,7 +129,7 @@ class ProfileViewController: UIViewController {
     
     @objc
     private func didTapButton() {
-        OAuth2TokenStorage().token = nil
+        oauth2TokenStorage.token = nil
         guard let window = UIApplication.shared.windows.first else {
             assertionFailure("Invalid window configuration")
             return

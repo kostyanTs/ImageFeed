@@ -21,11 +21,14 @@ final class OAuth2Service {
     private var task: URLSessionTask?
     private var lastCode: String?
     static let shared = OAuth2Service()
-//    private init() {}
+    
+    private init() {}
         
     func makeOAuthTokenRequest(code: String) -> URLRequest? {
-        let baseURL = URL(string: "https://unsplash.com")!
-        let url = URL(
+        guard let baseURL = URL(string: "https://unsplash.com") else {
+            preconditionFailure("Error: unable to construct baseUrl")
+        }
+        guard let url = URL(
             string: "/oauth/token"
             + "?client_id=\(Constants.accessKey)"
             + "&&client_secret=\(Constants.secretKey)"
@@ -33,7 +36,10 @@ final class OAuth2Service {
             + "&&code=\(code)"
             + "&&grant_type=authorization_code",
             relativeTo: baseURL                          
-        )!
+        ) else {
+            assertionFailure("Error: failed to create URL")
+            return nil
+        }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         return request
@@ -61,20 +67,15 @@ final class OAuth2Service {
                 print(result)
                 switch result {
                 case .success(let decodedData):
-                    do {
-
-
-                        guard let accessToken = decodedData.access_token else {
-                            fatalError("Error: can`t decode token!")
-                        }
-                        self.task = nil
-                        self.lastCode = nil
-                        completion(.success(accessToken))
-                    } catch {
-                        completion(.failure(error))
-                        print("Error: error of requesting: \(error)")
+                    guard let accessToken = decodedData.access_token else {
+                        fatalError("Error: can`t decode token!")
                     }
+                    self.task = nil
+                    self.lastCode = nil
+                    completion(.success(accessToken))
                 case .failure(let error):
+                    self.task = nil
+                    self.lastCode = nil
                     completion(.failure(error))
                     print("Error: error of requesting: \(error)")
                 }
