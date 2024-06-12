@@ -6,10 +6,13 @@
 //
 
 import UIKit
+import SwiftKeychainWrapper
 
 final class OAuth2TokenStorage {
     
-    private let usersDefaults = UserDefaults.standard
+    static let shared = OAuth2TokenStorage()
+    
+    private init() {}
     
     private enum Keys: String {
         case token
@@ -17,18 +20,17 @@ final class OAuth2TokenStorage {
     
     var token: String? {
         get {
-            guard let data = usersDefaults.data(forKey: Keys.token.rawValue),
-                  let token = try?JSONDecoder().decode(String.self, from: data) else {
+            guard let token = KeychainWrapper.standard.string(forKey: "Auth token")  else {
                 return nil
             }
             return token
         }
         
         set {
-            guard let data = try?JSONEncoder().encode(newValue) else {
+            guard let token = newValue else {
                 return
             }
-            usersDefaults.set(data, forKey: Keys.token.rawValue)
+            KeychainWrapper.standard.set(token, forKey: "Auth token")
         }
     }
 }
