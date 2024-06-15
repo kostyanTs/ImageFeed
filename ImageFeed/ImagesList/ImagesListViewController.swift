@@ -86,7 +86,7 @@ extension ImagesListViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         configCell(for: imagesListCell, with: indexPath)
-        guard let thumbImageUrl = URL(string: photos[indexPath.row].thumbImageURL),
+        guard let thumbImageUrl = URL(string: photos[indexPath.row].largeImageURL),
               let imageView = imagesListCell.imageListView
         else {
             return imagesListCell
