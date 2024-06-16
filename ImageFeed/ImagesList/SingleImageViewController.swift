@@ -6,18 +6,12 @@
 //
 
 import UIKit
+import Kingfisher
+import ProgressHUD
 
 class SingleImageViewController: UIViewController {
     
-    var image: UIImage? {
-        didSet {
-            guard isViewLoaded else { return }
-            singleImageView.image = image
-            guard let image = image else { return }
-            singleImageView.frame.size = image.size
-            rescaleAndCenterImageInScrollView(image: image)
-        }
-    }
+    var imageUrl: URL?
     
     @IBOutlet weak var singleImageView: UIImageView!
     @IBOutlet weak var didTapBackButton: UIButton!
@@ -25,13 +19,31 @@ class SingleImageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        singleImageView.image = image
         scrollView.minimumZoomScale = 1
         scrollView.maximumZoomScale = 1.5
-        guard let image = singleImageView.image else { return }
-        singleImageView.frame.size = image.size
-        rescaleAndCenterImageInScrollView(image: image)
-
+//        guard let image = singleImageView.image else { return }
+//        singleImageView.frame.size = image.size
+//        rescaleAndCenterImageInScrollView(image: image)
+        setImage()
+    }
+    
+    private func setImage() {
+        guard let imageUrl = imageUrl else { return }
+        UIBlockingProgressHUD.show()
+        singleImageView.kf.indicatorType = .activity
+        singleImageView.kf.setImage(with: imageUrl, placeholder: UIImage(named: "imagesListPlaceholder")) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
+            guard let self = self else { return }
+            switch result {
+            case .success(let result):
+                rescaleAndCenterImageInScrollView(image: result.image)
+            case .failure(let error):
+                print("[SingleImageViewController]: \(error)")
+                guard let image = UIImage(named: "imagesListPlaceholder") else { return }
+                singleImageView.image = image
+                rescaleAndCenterImageInScrollView(image: image)
+            }
+        }
     }
     
     private func rescaleAndCenterImageInScrollView(image: UIImage) {
