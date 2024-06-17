@@ -49,7 +49,7 @@ final class ProfileViewController: UIViewController {
     
     func updateAvatar() {
         guard
-            let profileImageURL = ProfileImageService.shared.profileImage?.profile_image.small,
+            let profileImageURL = ProfileImageService.shared.profileImage?.profile_image.medium,
             let url = URL(string: profileImageURL)
         else { return }
         profilePhotoImageView.kf.setImage(with: url, placeholder: UIImage(named: "profilePlaceHolder"))

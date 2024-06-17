@@ -141,6 +141,9 @@
                                                     <rect key="frame" x="356" y="4" width="42" height="42"/>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <state key="normal" image="yesLike"/>
+                                                    <connections>
+                                                        <action selector="likeButtonClickedWithSender:" destination="Sy3-eA-oNy" eventType="touchUpInside" id="wFv-kS-8fr"/>
+                                                    </connections>
                                                 </button>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SfU-Ml-GSi">
                                                     <rect key="frame" x="16" y="274" width="382" height="30"/>
@@ -261,12 +264,16 @@
                         <constraints>
                             <constraint firstItem="6Rq-HB-C8j" firstAttribute="centerX" secondItem="oHJ-mT-1oE" secondAttribute="centerX" id="0ss-9J-zcl"/>
                             <constraint firstItem="6Rq-HB-C8j" firstAttribute="width" secondItem="LQb-MB-ZAV" secondAttribute="width" multiplier="0.120773" id="1ad-7C-jXz"/>
+                            <constraint firstItem="DEY-gD-60H" firstAttribute="trailing" secondItem="oHJ-mT-1oE" secondAttribute="trailing" id="KFg-vp-XjT"/>
                             <constraint firstItem="DEY-gD-60H" firstAttribute="trailing" secondItem="oHJ-mT-1oE" secondAttribute="trailing" id="LLj-FG-ZPi"/>
+                            <constraint firstAttribute="bottom" secondItem="DEY-gD-60H" secondAttribute="bottom" id="X3F-ZH-0vo"/>
                             <constraint firstItem="oHJ-mT-1oE" firstAttribute="bottom" secondItem="6Rq-HB-C8j" secondAttribute="bottom" constant="17" id="gUc-Gk-cRn"/>
                             <constraint firstAttribute="bottom" secondItem="DEY-gD-60H" secondAttribute="bottom" id="glv-4o-tK1"/>
                             <constraint firstItem="DEY-gD-60H" firstAttribute="top" secondItem="LQb-MB-ZAV" secondAttribute="top" id="lLF-eB-9Y6"/>
                             <constraint firstItem="DEY-gD-60H" firstAttribute="leading" secondItem="oHJ-mT-1oE" secondAttribute="leading" id="s11-yF-CLJ"/>
                             <constraint firstItem="6Rq-HB-C8j" firstAttribute="height" secondItem="LQb-MB-ZAV" secondAttribute="height" multiplier="0.0558036" id="ua6-9n-NDZ"/>
+                            <constraint firstItem="DEY-gD-60H" firstAttribute="top" secondItem="LQb-MB-ZAV" secondAttribute="top" id="y87-B5-jQ5"/>
+                            <constraint firstItem="DEY-gD-60H" firstAttribute="leading" secondItem="oHJ-mT-1oE" secondAttribute="leading" id="zjV-5W-GKF"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="qSy-Wj-jwc"/>

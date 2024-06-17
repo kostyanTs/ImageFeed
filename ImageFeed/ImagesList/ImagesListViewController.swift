@@ -60,17 +60,17 @@ final class ImagesListViewController: UIViewController {
 //        let thumbImageUrl = URL(string: photos[indexPath.row].thumbImageURL)
 //        guard let imageUrl = thumbImageUrl else { return }
 //        cell.imageListView?.kf.setImage(with: imageUrl, placeholder: UIImage(named: ""))
-        guard let image = UIImage(named: "imagesListPlaceholder") else { return }
-        cell.imageListView.image = image
-        guard let date = photos[indexPath.row].createdAt else {
-            cell.dateLabel.text = ""
-            return
+        if indexPath.row < photos.count{
+            guard let image = UIImage(named: "imagesListPlaceholder") else { return }
+            guard let date = photos[indexPath.row].createdAt else {
+                cell.dateLabel.text = ""
+                return
+            }
+            let isLiked = photos[indexPath.row].isLiked
+            cell.setLike(isLike: isLiked)
+            cell.imageListView.image = image
+            cell.dateLabel?.text = dateFormatter.string(from: date)
         }
-        cell.dateLabel?.text = dateFormatter.string(from: date)
- 
-        let isLiked = photos[indexPath.row].isLiked
-        let likeImage = isLiked ? UIImage(named: "yesLike") : UIImage(named: "noLike")
-        cell.likeButton.setImage(likeImage, for: .normal)
     }
 }
 
@@ -91,6 +91,7 @@ extension ImagesListViewController: UITableViewDataSource {
         else {
             return imagesListCell
         }
+        imagesListCell.delegate = self
         imageView.kf.indicatorType = .activity
         imageView.kf.setImage(with: thumbImageUrl, placeholder: UIImage(named: "imagesListPlaceholder")) { result in
             switch result {
@@ -139,6 +140,31 @@ extension ImagesListViewController {
                 }
                 tableView.insertRows(at: indexPaths, with: .automatic)
             } completion: { _ in }
+        }
+    }
+}
+
+extension ImagesListViewController: ImagesListCellDelegate {
+    func imageListCellDidTapLike(_ cell: ImagesListCell, completion: @escaping (Bool) -> Void) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let photo = photos[indexPath.row]
+        UIBlockingProgressHUD.show()
+        imagesListService.changeLike(photoId: photo.id, isLike: photo.isLiked) { [weak self] result in
+            guard let self = self else {
+                print("[ImagesListViewController]: imagesListCellDidTapLike error with imagesListServices.changeLike")
+                return
+            }
+            switch result {
+            case .success():
+                self.photos = self.imagesListService.photos
+                let isLiked = self.photos[indexPath.row].isLiked
+                completion(isLiked)
+                UIBlockingProgressHUD.dismiss()
+            case .failure(_):
+                UIBlockingProgressHUD.dismiss()
+                print("[ImagesListViewController]: imagesListCellDidTapLike error with imagesListServices.changeLike 'case .failure'")
+            }
+            
         }
     }
 }

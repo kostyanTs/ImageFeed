@@ -44,7 +44,11 @@ final class ImagesListService {
             return
         }
         
-        let task = URLSession.shared.objectTask(for: requestWithPageNumber) { (result: Result<[PhotoResult],Error>) in
+        let task = URLSession.shared.objectTask(for: requestWithPageNumber) { [weak self] (result: Result<[PhotoResult],Error>) in
+            guard let self = self else {
+                print("[ImagesListService]: fetchPhotoNextPage error with URLSession.shared.objectTask")
+                return
+            }
                 switch result {
                 case .success(let decodedData):
                     var arrayOfPhotos: [Photo] = []
@@ -77,6 +81,54 @@ final class ImagesListService {
             }
             self.task = task
             task.resume()
+    }
+    
+    private func likePhotoRequest(photoId: String) -> URLRequest? {
+        guard let url = URL(string: mainUrl + "photos/\(photoId)/like"),
+              let token = oauth2TokenStorage.token
+        else {
+            preconditionFailure("[ImagesListService]: Error: can't construct likePhotoRequest")
+        }
+        var request = URLRequest(url: url)
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        return request
+    }
+    
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
+        guard task == nil else { return }
+        guard var likePhotoRequest = likePhotoRequest(photoId: photoId) else {
+            print("[ImagesListServices]: can't construct likePhotoRequest")
+            return
+        }
+        likePhotoRequest.httpMethod = isLike ? "DELETE" : "POST"
+        let task = urlSession.objectTask(for: likePhotoRequest) { [weak self] (result: Result<LikeResult, Error>) in
+            guard let self = self else {
+                print("[ImagesListService]: changeLike error with URLSession.shared.objectTask")
+                return
+            }
+            switch result {
+            case .success(_):
+                if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
+                    let photo = self.photos[index]
+                    let newPhoto = Photo(
+                        id: photo.id,
+                        size: photo.size,
+                        createdAt: photo.createdAt,
+                        welcomeDescription: photo.welcomeDescription,
+                        thumbImageURL: photo.thumbImageURL,
+                        largeImageURL: photo.largeImageURL,
+                        isLiked: !photo.isLiked
+                    )
+                    self.photos[index] = newPhoto
+                    completion(.success(Void()))
+                }
+            case .failure(let error):
+                completion(.failure(error))
+                print("[ImagesListService]: changeLike error with case .failure ")
+            }
+            self.task = nil
+        }
+        task.resume()
     }
 }
 
