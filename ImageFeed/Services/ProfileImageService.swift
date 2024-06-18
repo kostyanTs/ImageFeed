@@ -68,6 +68,10 @@ final class ProfileImageService {
         self.task = task
         task.resume()
     }
+    
+    func deleteProfileAvatar() {
+        self.profileImage = nil
+    }
 }
 
     

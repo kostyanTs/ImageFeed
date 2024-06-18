@@ -19,6 +19,7 @@ final class ProfileViewController: UIViewController {
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
     private let oauth2TokenStorage = OAuth2TokenStorage.shared
+    private let profileLogoutService = ProfileLogoutService.shared
     private var profileImageServiceObserver: NSObjectProtocol?
     
     override func viewDidLoad() {
@@ -45,6 +46,34 @@ final class ProfileViewController: UIViewController {
         self.profilePhotoImageView.layer.cornerRadius =  self.profilePhotoImageView.frame.size.width/2
         self.profilePhotoImageView.layer.masksToBounds = true
         
+    }
+    
+    func showAlert() {
+        let alert = UIAlertController(
+            title: "Пока, пока!",
+            message: "Уверены что хотите выйти?",
+            preferredStyle: .alert
+        )
+        let yesButton = UIAlertAction(
+            title: "Да",
+            style: .default) { _ in
+                alert.dismiss(animated: true)
+                self.profileLogoutService.logout()
+                
+                guard let window = UIApplication.shared.windows.first else {
+                    assertionFailure("Invalid Configuration")
+                    return
+                }
+                window.rootViewController = SplashViewController()
+            }
+        let noAButton = UIAlertAction(
+            title: "Нет",
+            style: .default) { _ in
+                alert.dismiss(animated: true)
+            }
+        alert.addAction(yesButton)
+        alert.addAction(noAButton)
+        present(alert, animated: true)
     }
     
     func updateAvatar() {
@@ -129,13 +158,6 @@ final class ProfileViewController: UIViewController {
     
     @objc
     private func didTapButton() {
-        oauth2TokenStorage.token = nil
-        guard let window = UIApplication.shared.windows.first else {
-            assertionFailure("Invalid window configuration")
-            return
-        }
-        let tabBarController = UIStoryboard(name: "Main", bundle: .main)
-            .instantiateViewController(withIdentifier: "NavigationController")
-        window.rootViewController = tabBarController
+        self.showAlert()
     }
 }

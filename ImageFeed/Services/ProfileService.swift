@@ -18,7 +18,7 @@ final class ProfileService {
     
     private init() {}
     
-    func makeProfileRequest(_ token: String) -> URLRequest? {
+    private func makeProfileRequest(_ token: String) -> URLRequest? {
         guard let url = URL(string: "https://api.unsplash.com/me") else {
             preconditionFailure("Error: cant construct url")
         }
@@ -56,5 +56,9 @@ final class ProfileService {
         }
         self.task = task
         task.resume()
+    }
+    
+    func deleteProfile() {
+        self.profileInfo = nil
     }
 }
