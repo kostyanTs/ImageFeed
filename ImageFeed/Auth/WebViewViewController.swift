@@ -8,6 +8,10 @@
 import UIKit
 import WebKit
 
+enum WebViewConstants {
+    static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
+}
+
 protocol WebViewViewControllerDelegate: AnyObject {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String)
     func webViewViewControllerDidCancel(_ vc: WebViewViewController)
@@ -43,7 +47,7 @@ final class WebViewViewController: UIViewController {
     }
     
     private func loadAuthView() {
-        guard var urlComponents = URLComponents(string: Constants.unsplashAuthorizeURLString) else {
+        guard var urlComponents = URLComponents(string: WebViewConstants.unsplashAuthorizeURLString) else {
             return
         }  //1
         urlComponents.queryItems = [
@@ -61,13 +65,13 @@ final class WebViewViewController: UIViewController {
     
     private func code(from navigationAction: WKNavigationAction) -> String? {
         if
-            let url = navigationAction.request.url,                         //1
-            let urlComponents = URLComponents(string: url.absoluteString),  //2
-            urlComponents.path == "/oauth/authorize/native",                //3
-            let items = urlComponents.queryItems,                           //4
-            let codeItem = items.first(where: { $0.name == "code" })        //5
+            let url = navigationAction.request.url,
+            let urlComponents = URLComponents(string: url.absoluteString),
+            urlComponents.path == "/oauth/authorize/native",
+            let items = urlComponents.queryItems,
+            let codeItem = items.first(where: { $0.name == "code" })
         {
-            return codeItem.value                                           //6
+            return codeItem.value
         } else {
             return nil
         }
