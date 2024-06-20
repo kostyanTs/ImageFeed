@@ -20,9 +20,10 @@ final class ImagesListViewController: UIViewController {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
         formatter.timeStyle = .none
+        formatter.locale = Locale.init(identifier: "RU")
         return formatter
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
@@ -57,9 +58,7 @@ final class ImagesListViewController: UIViewController {
     
     
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-//        let thumbImageUrl = URL(string: photos[indexPath.row].thumbImageURL)
-//        guard let imageUrl = thumbImageUrl else { return }
-//        cell.imageListView?.kf.setImage(with: imageUrl, placeholder: UIImage(named: ""))
+
         if indexPath.row < photos.count{
             guard let image = UIImage(named: "imagesListPlaceholder") else { return }
             guard let date = photos[indexPath.row].createdAt else {
@@ -69,7 +68,7 @@ final class ImagesListViewController: UIViewController {
             let isLiked = photos[indexPath.row].isLiked
             cell.setLike(isLike: isLiked)
             cell.imageListView.image = image
-            cell.dateLabel?.text = dateFormatter.string(from: date)
+            cell.dateLabel?.text = self.dateFormatter.string(from: date)
         }
     }
 }

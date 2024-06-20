@@ -21,6 +21,7 @@ final class ImagesListService {
     
     private var mainUrl = "https://api.unsplash.com/"
     private var lastPage: Int?
+    private let dateFormatterISO8601 = ISO8601DateFormatter()
     
     var photos: [Photo] = []
     
@@ -56,7 +57,7 @@ final class ImagesListService {
                         let photo = Photo(
                             id: data.id,
                             size: CGSize(width: data.width, height: data.height),
-                            createdAt: ISO8601DateFormatter().date(from: data.createdAt ?? ""),
+                            createdAt: self.dateFormatterISO8601.date(from: data.createdAt ?? ""),
                             welcomeDescription: data.description,
                             thumbImageURL: data.urls.thumb,
                             largeImageURL: data.urls.full,
