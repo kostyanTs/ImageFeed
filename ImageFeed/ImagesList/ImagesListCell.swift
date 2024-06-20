@@ -18,12 +18,15 @@ final class ImagesListCell: UITableViewCell {
     @IBOutlet var likeButton: UIButton!
     @IBOutlet var dateLabel: UILabel!
     
+    
+    
     weak var delegate: ImagesListCellDelegate?
     
     static let reuseIdentifier = "ImagesListCell"
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        likeButton.accessibilityIdentifier = "likeButton"
         imageListView.kf.cancelDownloadTask()
     }
     

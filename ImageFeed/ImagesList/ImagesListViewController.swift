@@ -7,11 +7,17 @@
 
 import UIKit
 
-final class ImagesListViewController: UIViewController {
+public protocol ImagesListViewControllerProtocol: AnyObject {
+    var presenter: ImagesListPresenterProtocol? { get set }
+}
+
+final class ImagesListViewController: UIViewController & ImagesListViewControllerProtocol {
     
     @IBOutlet private var tableView: UITableView!
     
     private let imagesListService = ImagesListService.shared
+    
+    var presenter: ImagesListPresenterProtocol?
     
     private var photos: [Photo] = []
     private var imagesListServiceObserver: NSObjectProtocol?
@@ -25,6 +31,7 @@ final class ImagesListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        presenter = ImagesListPresenter(view: self)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
@@ -36,7 +43,7 @@ final class ImagesListViewController: UIViewController {
                     guard let self = self else { return }
                     self.updateTableViewAnimated()
                 }
-        imagesListService.fetchPhotosNextPage()
+        presenter?.fetchPhotosNextPage()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -57,9 +64,6 @@ final class ImagesListViewController: UIViewController {
     
     
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-//        let thumbImageUrl = URL(string: photos[indexPath.row].thumbImageURL)
-//        guard let imageUrl = thumbImageUrl else { return }
-//        cell.imageListView?.kf.setImage(with: imageUrl, placeholder: UIImage(named: ""))
         if indexPath.row < photos.count{
             guard let image = UIImage(named: "imagesListPlaceholder") else { return }
             guard let date = photos[indexPath.row].createdAt else {
@@ -125,7 +129,7 @@ extension ImagesListViewController: UITableViewDelegate {
 extension ImagesListViewController {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row + 1 == photos.count {
-            imagesListService.fetchPhotosNextPage()
+            presenter?.fetchPhotosNextPage()
         }
     }
     

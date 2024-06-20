@@ -25,22 +25,25 @@ final class OAuth2Service {
     private init() {}
         
     func makeOAuthTokenRequest(code: String) -> URLRequest? {
-        guard let baseURL = URL(string: "https://unsplash.com") else {
-            preconditionFailure("Error: unable to construct baseUrl")
-        }
-        guard let url = URL(
-            string: "/oauth/token"
-            + "?client_id=\(Constants.accessKey)"
-            + "&&client_secret=\(Constants.secretKey)"
-            + "&&redirect_uri=\(Constants.redirectURL)"
-            + "&&code=\(code)"
-            + "&&grant_type=authorization_code",
-            relativeTo: baseURL                          
-        ) else {
-            assertionFailure("Error: failed to create URL")
+        guard
+            var urlComponents = URLComponents(string: "https://unsplash.com/oauth/token")
+        else {
             return nil
         }
-        var request = URLRequest(url: url)
+        
+        urlComponents.queryItems = [
+            URLQueryItem(name: "client_id", value: Constants.accessKey),
+            URLQueryItem(name: "client_secret", value: Constants.secretKey),
+            URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
+            URLQueryItem(name: "code", value: code),
+            URLQueryItem(name: "grant_type", value: "authorization_code"),
+        ]
+        
+        guard let authTokenUrl = urlComponents.url else {
+            return nil
+        }
+        
+        var request = URLRequest(url: authTokenUrl)
         request.httpMethod = "POST"
         return request
     }

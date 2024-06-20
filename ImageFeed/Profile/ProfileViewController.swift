@@ -8,7 +8,15 @@
 import UIKit
 import Kingfisher
 
-final class ProfileViewController: UIViewController {
+public protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfilePresenterProtocol? { get set }
+    func setAvatar(url: URL)
+    func updateView(profile: ProfileResult)
+}
+
+final class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
+    
+    var presenter: ProfilePresenterProtocol?
     
     private let profilePhotoImageView = UIImageView()
     private let nameLabel = UILabel()
@@ -24,6 +32,7 @@ final class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        presenter = ProfilePresenter(view: self)
         view.backgroundColor = UIColor(named: "YP Black (iOS)")
         addUIViews()
         profileImageServiceObserver = NotificationCenter.default
@@ -33,11 +42,10 @@ final class ProfileViewController: UIViewController {
                 queue: .main
             ) { [weak self] _ in
                 guard let self = self else { return }
-                self.updateAvatar()
+                self.presenter?.updateAvatar()
             }
-        updateAvatar()
-        guard let profileModel = profileService.profileInfo else { return }
-        updateProfieDetails(profile: profileModel)
+        presenter?.updateAvatar()
+        presenter?.updateProfileDetails()
     }
     
     override func viewDidLayoutSubviews() {
@@ -58,7 +66,7 @@ final class ProfileViewController: UIViewController {
             title: "Да",
             style: .default) { _ in
                 alert.dismiss(animated: true)
-                self.profileLogoutService.logout()
+                self.presenter?.logout()
                 
                 guard let window = UIApplication.shared.windows.first else {
                     assertionFailure("Invalid Configuration")
@@ -76,13 +84,14 @@ final class ProfileViewController: UIViewController {
         present(alert, animated: true)
     }
     
-    func updateAvatar() {
-        guard
-            let profileImageURL = ProfileImageService.shared.profileImage?.profile_image.medium,
-            let url = URL(string: profileImageURL)
-        else { return }
+    func setAvatar(url: URL) {
         profilePhotoImageView.kf.setImage(with: url, placeholder: UIImage(named: "profilePlaceHolder"))
-        
+    }
+    
+    func updateView(profile: ProfileResult) {
+        self.nameLabel.text = (profile.last_name ?? "") + " " + (profile.first_name ?? "")
+        self.usernameLabel.text = "@" + (profile.username ?? "")
+        self.commentLabel.text = profile.bio
     }
     
     func addUIViews() {
@@ -91,12 +100,6 @@ final class ProfileViewController: UIViewController {
         addUsernameLabel(label: usernameLabel)
         addCommentLabel(label: commentLabel)
         addLogoutButton()
-    }
-    
-    func updateProfieDetails(profile: ProfileResult) {
-        self.nameLabel.text = (profile.last_name ?? "") + " " + (profile.first_name ?? "")
-        self.usernameLabel.text = "@" + (profile.username ?? "")
-        self.commentLabel.text = profile.bio
     }
     
     func addProfilePhoto(imageView: UIImageView) {
@@ -146,6 +149,7 @@ final class ProfileViewController: UIViewController {
             with: UIImage(named: "ExitLogout")!,
             target: self,
             action: #selector(Self.didTapButton))
+        button.accessibilityIdentifier = "LogoutButtton"
         button.tintColor = UIColor(named: "YP Red (iOS)")
         button.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(button)
