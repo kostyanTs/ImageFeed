@@ -21,11 +21,12 @@ final class ImagesListViewController: UIViewController & ImagesListViewControlle
     
     private var photos: [Photo] = []
     private var imagesListServiceObserver: NSObjectProtocol?
-    
+ 
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
         formatter.timeStyle = .none
+        formatter.locale = Locale.init(identifier: "RU")
         return formatter
     }()
     

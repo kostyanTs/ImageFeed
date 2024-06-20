@@ -18,4 +18,16 @@ final class ImagesListTests: XCTestCase {
         viewController.viewDidLoad()
         XCTAssertTrue(presenter.fetchPhotosNextPageDidCalled)
     }
+    
+    func testUploadedPhotosAfterFetchPhotos() {
+        let viewController = ImagesListViewController()
+        let presenter = ImagesListPresenterMock()
+        let imageService = ImagesListServiceSpy.shared
+        viewController.presenter = presenter
+        presenter.view = viewController
+        
+        viewController.presenter?.fetchPhotosNextPage()
+        
+        XCTAssertTrue(imageService.photosWereUpdated)
+    }
 }

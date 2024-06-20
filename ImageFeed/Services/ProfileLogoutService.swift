@@ -23,15 +23,15 @@ final class ProfileLogoutService {
        ProfileImageService.shared.deleteProfileAvatar()
        ImagesListService.shared.photos = []
        OAuth2TokenStorage.shared.deleteToken()
-//       HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
-//      // Запрашиваем все данные из локального хранилища
-//       WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
-//         // Массив полученных записей удаляем из хранилища
-//           records.forEach { record in
-//               WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
-//         }
-//      }
-       HTTPCookieStorage.shared.cookies?.forEach(HTTPCookieStorage.shared.deleteCookie)
-       WKWebsiteDataStore.default().removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), modifiedSince: Date(timeIntervalSince1970: 0), completionHandler: {})
+       HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+      // Запрашиваем все данные из локального хранилища
+       WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+         // Массив полученных записей удаляем из хранилища
+           records.forEach { record in
+               WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
+         }
+      }
+//       HTTPCookieStorage.shared.cookies?.forEach(HTTPCookieStorage.shared.deleteCookie)
+//       WKWebsiteDataStore.default().removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), modifiedSince: Date(timeIntervalSince1970: 0), completionHandler: {})
    }
 }

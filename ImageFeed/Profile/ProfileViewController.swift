@@ -89,7 +89,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
     }
     
     func updateView(profile: ProfileResult) {
-        self.nameLabel.text = (profile.last_name ?? "") + " " + (profile.first_name ?? "")
+        self.nameLabel.text = (profile.first_name ?? "") + " " + (profile.last_name ?? "")
         self.usernameLabel.text = "@" + (profile.username ?? "")
         self.commentLabel.text = profile.bio
     }

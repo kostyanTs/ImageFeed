@@ -49,6 +49,8 @@
 		35390A652C22F6B3008EB6E3 /* WebViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35390A642C22F6B3008EB6E3 /* WebViewPresenter.swift */; };
 		35390A672C230164008EB6E3 /* AuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35390A662C230164008EB6E3 /* AuthHelper.swift */; };
 		353C9CC62BA315B4006CB055 /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C9CC52BA315B4006CB055 /* ImagesListCell.swift */; };
+		355844B82C24BFA600FAD982 /* ImagesListPresenterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355844B72C24BFA600FAD982 /* ImagesListPresenterMock.swift */; };
+		355844BA2C24BFD800FAD982 /* ImagesListServiceSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355844B92C24BFD800FAD982 /* ImagesListServiceSpy.swift */; };
 		358202CB2C231BD10006AAD8 /* WebViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358202CA2C231BD10006AAD8 /* WebViewTests.swift */; };
 		358202D72C2325B60006AAD8 /* WebViewPresenterSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358202D62C2325B60006AAD8 /* WebViewPresenterSpy.swift */; };
 		358202D92C2326750006AAD8 /* WebViewViewControllerSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358202D82C2326750006AAD8 /* WebViewViewControllerSpy.swift */; };
@@ -114,6 +116,8 @@
 		35390A642C22F6B3008EB6E3 /* WebViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewPresenter.swift; sourceTree = "<group>"; };
 		35390A662C230164008EB6E3 /* AuthHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthHelper.swift; sourceTree = "<group>"; };
 		353C9CC52BA315B4006CB055 /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
+		355844B72C24BFA600FAD982 /* ImagesListPresenterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListPresenterMock.swift; sourceTree = "<group>"; };
+		355844B92C24BFD800FAD982 /* ImagesListServiceSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListServiceSpy.swift; sourceTree = "<group>"; };
 		358202CA2C231BD10006AAD8 /* WebViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewTests.swift; sourceTree = "<group>"; };
 		358202D22C231DA50006AAD8 /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		358202D52C2323640006AAD8 /* Image FeedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Image FeedTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -176,6 +180,8 @@
 				350CDAFA2C2379D300828A38 /* ImagesListTests.swift */,
 				350CDAFC2C2379FC00828A38 /* ImagesListViewControllerSpy.swift */,
 				350CDAFE2C237AE800828A38 /* ImagesListPresenter.swift */,
+				355844B72C24BFA600FAD982 /* ImagesListPresenterMock.swift */,
+				355844B92C24BFD800FAD982 /* ImagesListServiceSpy.swift */,
 			);
 			path = ImagesList;
 			sourceTree = "<group>";
@@ -493,6 +499,8 @@
 				350CDAFB2C2379D300828A38 /* ImagesListTests.swift in Sources */,
 				358202D72C2325B60006AAD8 /* WebViewPresenterSpy.swift in Sources */,
 				350CDAFF2C237AE800828A38 /* ImagesListPresenter.swift in Sources */,
+				355844B82C24BFA600FAD982 /* ImagesListPresenterMock.swift in Sources */,
+				355844BA2C24BFD800FAD982 /* ImagesListServiceSpy.swift in Sources */,
 				350CDAF82C23766100828A38 /* ProfileViewControllerSpy.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
