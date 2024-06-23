@@ -64,7 +64,8 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         )
         let yesButton = UIAlertAction(
             title: "Да",
-            style: .default) { _ in
+            style: .default) { [weak self] _ in
+                guard let self = self else { return }
                 alert.dismiss(animated: true)
                 self.presenter?.logout()
                 
@@ -89,12 +90,12 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
     }
     
     func updateView(profile: ProfileResult) {
-        self.nameLabel.text = (profile.first_name ?? "") + " " + (profile.last_name ?? "")
-        self.usernameLabel.text = "@" + (profile.username ?? "")
-        self.commentLabel.text = profile.bio
+        nameLabel.text = (profile.first_name ?? "") + " " + (profile.last_name ?? "")
+        usernameLabel.text = "@" + (profile.username ?? "")
+        commentLabel.text = profile.bio
     }
     
-    func addUIViews() {
+    private func addUIViews() {
         addProfilePhoto(imageView: profilePhotoImageView)
         addNameLabel(label: nameLabel)
         addUsernameLabel(label: usernameLabel)
@@ -102,7 +103,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         addLogoutButton()
     }
     
-    func addProfilePhoto(imageView: UIImageView) {
+    private func addProfilePhoto(imageView: UIImageView) {
         let image = UIImage(named: "ProfilePhoto")
         imageView.image = image
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -114,7 +115,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
 
     }
     
-    func addNameLabel(label: UILabel) {
+    private func addNameLabel(label: UILabel) {
         label.text = "Екатерина Новикова"
         label.textColor = UIColor(named: "YP White (iOS)")
         label.font = .systemFont(ofSize: 23, weight: .bold)
@@ -124,7 +125,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         label.topAnchor.constraint(equalTo: profilePhotoImageView.bottomAnchor, constant: 8).isActive = true
     }
     
-    func addUsernameLabel(label: UILabel) {
+    private func addUsernameLabel(label: UILabel) {
         label.text = "@ekaterina_nov"
         label.textColor = UIColor(named: "YP Grey (iOS)")
         label.font = .systemFont(ofSize: 13)
@@ -134,7 +135,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         label.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8).isActive = true
     }
     
-    func addCommentLabel(label: UILabel) {
+    private func addCommentLabel(label: UILabel) {
         label.text = "Hello, world!"
         label.textColor = UIColor(named: "YP White (iOS)")
         label.font = .systemFont(ofSize: 13)
@@ -144,7 +145,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         label.topAnchor.constraint(equalTo: usernameLabel.bottomAnchor, constant: 8).isActive = true
     }
     
-    func addLogoutButton() {
+    private func addLogoutButton() {
         let button = UIButton.systemButton(
             with: UIImage(named: "ExitLogout")!,
             target: self,

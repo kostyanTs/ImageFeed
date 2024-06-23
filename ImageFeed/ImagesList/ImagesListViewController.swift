@@ -9,6 +9,7 @@ import UIKit
 
 public protocol ImagesListViewControllerProtocol: AnyObject {
     var presenter: ImagesListPresenterProtocol? { get set }
+    var photos: [Photo] { get set }
 }
 
 final class ImagesListViewController: UIViewController & ImagesListViewControllerProtocol {
@@ -18,15 +19,15 @@ final class ImagesListViewController: UIViewController & ImagesListViewControlle
     private let imagesListService = ImagesListService.shared
     
     var presenter: ImagesListPresenterProtocol?
+    var photos: [Photo] = []
     
-    private var photos: [Photo] = []
     private var imagesListServiceObserver: NSObjectProtocol?
  
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
         formatter.timeStyle = .none
-        formatter.locale = Locale.init(identifier: "RU")
+        formatter.locale = Locale(identifier: "ru_RU")
         return formatter
     }()
     
@@ -91,7 +92,7 @@ extension ImagesListViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         configCell(for: imagesListCell, with: indexPath)
-        guard let thumbImageUrl = URL(string: photos[indexPath.row].largeImageURL),
+        guard let thumbImageUrl = URL(string: photos[indexPath.row].thumbImageURL),
               let imageView = imagesListCell.imageListView
         else {
             return imagesListCell

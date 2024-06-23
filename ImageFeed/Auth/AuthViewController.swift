@@ -12,11 +12,12 @@ protocol AuthViewControllerDellegate {
 }
 
 final class AuthViewController: UIViewController {
+    
+    var delegate: AuthViewControllerDellegate?
 
     @IBOutlet var exitButton: UIButton!
     
     private let oauth2Service = OAuth2Service.shared
-    var delegate: AuthViewControllerDellegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
