@@ -20,18 +20,8 @@ final class ProfileImageService {
     
     private init() {}
     
-    func makeProfileImageRequest(token: String, username: String?) -> URLRequest? {
-
-        let urlProfile = "https://api.unsplash.com/users/"
-        guard let username = username else { preconditionFailure("Error: cant construct url") }
-        let urlImage = urlProfile + username
-        guard let url = URL(string: urlImage) else {
-            preconditionFailure("Error: cant construct url")
-        }
-        var request = URLRequest(url: url)
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        request.httpMethod = "GET"
-        return request
+    func deleteProfileAvatar() {
+        self.profileImage = nil
     }
     
     func fetchProfileImage(_ token: String, _ username: String, completion: @escaping (Result<ProfileImage, Error>) -> Void) {
@@ -46,12 +36,12 @@ final class ProfileImageService {
             return
         }
         
-        let task = urlSession.objectTask(for: request) { (result: Result<ProfileImage, Error>) in
+        let task = urlSession.objectTask(for: request) { [weak self] (result: Result<ProfileImage, Error>) in
+            guard let self = self else { return }
             DispatchQueue.main.async {
                 switch result {
                 case .success(let decodedData):
                     self.profileImage = decodedData
-                    self.task = nil
                     completion(.success(decodedData))
                     NotificationCenter.default
                         .post(
@@ -59,14 +49,28 @@ final class ProfileImageService {
                             object: self,
                             userInfo: ["URL": decodedData])
                 case .failure(let error):
-                    self.task = nil
                     completion(.failure(error))
                     print("Error: error of requesting: \(error)")
                 }
             }
+            self.task = nil
         }
         self.task = task
         task.resume()
+    }
+    
+    private func makeProfileImageRequest(token: String, username: String?) -> URLRequest? {
+
+        let urlProfile = "https://api.unsplash.com/users/"
+        guard let username = username else { preconditionFailure("Error: cant construct url") }
+        let urlImage = urlProfile + username
+        guard let url = URL(string: urlImage) else {
+            preconditionFailure("Error: cant construct url")
+        }
+        var request = URLRequest(url: url)
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.httpMethod = "GET"
+        return request
     }
 }
 

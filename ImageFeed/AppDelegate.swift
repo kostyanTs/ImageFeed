@@ -7,14 +7,15 @@
 
 import UIKit
 import CoreData
+import ProgressHUD
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        ProgressHUD.animationType = .activityIndicator
+        ProgressHUD.colorHUD = UIColor(named: "YP White (iOS)") ?? .white
+        ProgressHUD.colorAnimation = UIColor(named: "YP Black (iOS)") ?? .black
         return true
     }
 

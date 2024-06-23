@@ -12,12 +12,16 @@ protocol AuthViewControllerDellegate {
 }
 
 final class AuthViewController: UIViewController {
-
-    private let oauth2Service = OAuth2Service.shared
+    
     var delegate: AuthViewControllerDellegate?
+
+    @IBOutlet var exitButton: UIButton!
+    
+    private let oauth2Service = OAuth2Service.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        exitButton.accessibilityIdentifier = "Authenticate"
         configureBackButton()
     }
     
@@ -25,6 +29,7 @@ final class AuthViewController: UIViewController {
         navigationController?.navigationBar.backIndicatorImage = UIImage(named: "nav_back_button")
         navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "nav_back_button")
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem?.accessibilityIdentifier = "navBackButton"
         navigationItem.backBarButtonItem?.tintColor = UIColor(named: "YP Black (iOS)")
     }
     
@@ -33,6 +38,10 @@ final class AuthViewController: UIViewController {
             guard
                 let webViewViewController = segue.destination as? WebViewViewController
             else { fatalError("Failed to prepare for \(Segue.showWebViewSegueIdentifier)") }
+            let authHelper = AuthHelper()
+            let webViewPresenter = WebViewPresenter(authHelper: authHelper)
+            webViewPresenter.view = webViewViewController
+            webViewViewController.presenter = webViewPresenter
             webViewViewController.delegate = self
         } else {
             super.prepare(for: segue, sender: sender)

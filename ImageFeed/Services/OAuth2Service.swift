@@ -25,22 +25,25 @@ final class OAuth2Service {
     private init() {}
         
     func makeOAuthTokenRequest(code: String) -> URLRequest? {
-        guard let baseURL = URL(string: "https://unsplash.com") else {
-            preconditionFailure("Error: unable to construct baseUrl")
-        }
-        guard let url = URL(
-            string: "/oauth/token"
-            + "?client_id=\(Constants.accessKey)"
-            + "&&client_secret=\(Constants.secretKey)"
-            + "&&redirect_uri=\(Constants.redirectURL)"
-            + "&&code=\(code)"
-            + "&&grant_type=authorization_code",
-            relativeTo: baseURL                          
-        ) else {
-            assertionFailure("Error: failed to create URL")
+        guard
+            var urlComponents = URLComponents(string: "https://unsplash.com/oauth/token")
+        else {
             return nil
         }
-        var request = URLRequest(url: url)
+        
+        urlComponents.queryItems = [
+            URLQueryItem(name: "client_id", value: Constants.accessKey),
+            URLQueryItem(name: "client_secret", value: Constants.secretKey),
+            URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
+            URLQueryItem(name: "code", value: code),
+            URLQueryItem(name: "grant_type", value: "authorization_code"),
+        ]
+        
+        guard let authTokenUrl = urlComponents.url else {
+            return nil
+        }
+        
+        var request = URLRequest(url: authTokenUrl)
         request.httpMethod = "POST"
         return request
     }
@@ -62,7 +65,8 @@ final class OAuth2Service {
             return
         }
         
-        let task = urlSession.objectTask(for: request){ (result: Result<OAuthTokenResponseBody, Error>) in
+        let task = urlSession.objectTask(for: request){ [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
+            guard let self = self else { return }
             DispatchQueue.main.async {
                 print(result)
                 switch result {
@@ -70,16 +74,14 @@ final class OAuth2Service {
                     guard let accessToken = decodedData.access_token else {
                         fatalError("Error: can`t decode token!")
                     }
-                    self.task = nil
-                    self.lastCode = nil
                     completion(.success(accessToken))
                 case .failure(let error):
-                    self.task = nil
-                    self.lastCode = nil
                     completion(.failure(error))
                     print("Error: error of requesting: \(error)")
                 }
             }
+            self.task = nil
+            self.lastCode = nil
         }
         self.task = task
         task.resume()

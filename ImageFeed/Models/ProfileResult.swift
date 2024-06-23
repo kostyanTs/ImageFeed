@@ -11,7 +11,7 @@ private enum Keys: String {
     case token
 }
 
-struct ProfileResult: Codable {
+public struct ProfileResult: Codable {
     let id: String
     let updated_at: String
     let username: String?

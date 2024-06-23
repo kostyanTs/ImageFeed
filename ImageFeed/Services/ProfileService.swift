@@ -18,7 +18,7 @@ final class ProfileService {
     
     private init() {}
     
-    func makeProfileRequest(_ token: String) -> URLRequest? {
+    private func makeProfileRequest(_ token: String) -> URLRequest? {
         guard let url = URL(string: "https://api.unsplash.com/me") else {
             preconditionFailure("Error: cant construct url")
         }
@@ -40,21 +40,25 @@ final class ProfileService {
             return
         }
         
-        let task = urlSession.objectTask(for: request) { (result: Result<ProfileResult, Error>) in
+        let task = urlSession.objectTask(for: request) { [weak self] (result: Result<ProfileResult, Error>) in
+            guard let self = self else { return }
             DispatchQueue.main.async {
                 switch result {
                 case .success(let decodedData):
-                        self.profileInfo = decodedData
-                    self.task = nil
+                    self.profileInfo = decodedData
                         completion(.success(decodedData))
                 case .failure(let error):
-                    self.task = nil
                     completion(.failure(error))
                     print("[ProfileService]: \(error)")
                 }
             }
+            self.task = nil
         }
         self.task = task
         task.resume()
+    }
+    
+    func deleteProfile() {
+        self.profileInfo = nil
     }
 }

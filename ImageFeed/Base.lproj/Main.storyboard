@@ -25,9 +25,12 @@
                                     <constraint firstAttribute="height" constant="60" id="TTA-sD-AU6"/>
                                 </constraints>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fd0-ib-jBh">
+                            <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="Authenticate" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fd0-ib-jBh">
                                 <rect key="frame" x="16" y="724" width="382" height="48"/>
                                 <color key="backgroundColor" name="YP White (iOS)"/>
+                                <accessibility key="accessibilityConfiguration" identifier="Authenticate">
+                                    <bool key="isElement" value="YES"/>
+                                </accessibility>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="b3K-qJ-F8A"/>
                                 </constraints>
@@ -58,6 +61,9 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="ca5-ZE-IjT"/>
+                    <connections>
+                        <outlet property="exitButton" destination="fd0-ib-jBh" id="IbA-Qt-hsf"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="goQ-dP-7ay" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -66,7 +72,7 @@
         <!--Web View View Controller-->
         <scene sceneID="dNq-8w-s4f">
             <objects>
-                <viewController id="M5s-Ml-Pdg" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController restorationIdentifier="UnsplashWebView" storyboardIdentifier="WebViewViewController" id="M5s-Ml-Pdg" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="FMz-I4-4ap">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -137,10 +143,18 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bjh-LN-znv">
+                                                <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="likeButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bjh-LN-znv" userLabel="Like Button">
                                                     <rect key="frame" x="356" y="4" width="42" height="42"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="Like Button"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="42" id="5ez-vg-AlS"/>
+                                                        <constraint firstAttribute="height" constant="42" id="msC-kK-d4S"/>
+                                                    </constraints>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <state key="normal" image="yesLike"/>
+                                                    <connections>
+                                                        <action selector="likeButtonClickedWithSender:" destination="Sy3-eA-oNy" eventType="touchUpInside" id="wFv-kS-8fr"/>
+                                                    </connections>
                                                 </button>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SfU-Ml-GSi">
                                                     <rect key="frame" x="16" y="274" width="382" height="30"/>
@@ -160,15 +174,15 @@
                                             <color key="backgroundColor" name="YP Black (iOS)"/>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="SfU-Ml-GSi" secondAttribute="bottom" constant="4" id="2oE-US-AVU"/>
+                                                <constraint firstItem="bjh-LN-znv" firstAttribute="top" secondItem="ZG5-Nt-7NK" secondAttribute="top" constant="4" id="AEg-17-kCA"/>
                                                 <constraint firstAttribute="bottom" secondItem="I5a-Ws-G7J" secondAttribute="bottom" constant="12" id="LhR-VT-CFf"/>
                                                 <constraint firstAttribute="bottom" secondItem="f94-o2-gB0" secondAttribute="bottom" constant="4" id="NKa-WQ-XWR"/>
+                                                <constraint firstAttribute="trailing" secondItem="bjh-LN-znv" secondAttribute="trailing" constant="16" id="OdO-Os-i2d"/>
                                                 <constraint firstItem="I5a-Ws-G7J" firstAttribute="leading" secondItem="ZG5-Nt-7NK" secondAttribute="leading" constant="24" id="Qtb-hd-euq"/>
                                                 <constraint firstItem="SfU-Ml-GSi" firstAttribute="leading" secondItem="ZG5-Nt-7NK" secondAttribute="leading" constant="16" id="Yv2-5o-3mn"/>
                                                 <constraint firstAttribute="trailing" secondItem="SfU-Ml-GSi" secondAttribute="trailing" constant="16" id="d4F-Ac-llH"/>
                                                 <constraint firstAttribute="trailing" secondItem="f94-o2-gB0" secondAttribute="trailing" constant="16" id="eQx-Xo-lBR"/>
-                                                <constraint firstItem="bjh-LN-znv" firstAttribute="top" secondItem="ZG5-Nt-7NK" secondAttribute="top" constant="4" id="jq3-bA-hSB"/>
                                                 <constraint firstItem="f94-o2-gB0" firstAttribute="leading" secondItem="ZG5-Nt-7NK" secondAttribute="leading" constant="16" id="lXj-d2-tkB"/>
-                                                <constraint firstAttribute="trailing" secondItem="bjh-LN-znv" secondAttribute="trailing" constant="16" id="xId-tR-Sgg"/>
                                                 <constraint firstItem="f94-o2-gB0" firstAttribute="top" secondItem="ZG5-Nt-7NK" secondAttribute="top" constant="4" id="zTZ-uv-GFJ"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -249,6 +263,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gWr-rP-shS">
                                 <rect key="frame" x="9" y="55" width="24" height="24"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <accessibility key="accessibilityConfiguration" identifier="navBackButton"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="backwardButton"/>
                                 <connections>
@@ -261,12 +276,16 @@
                         <constraints>
                             <constraint firstItem="6Rq-HB-C8j" firstAttribute="centerX" secondItem="oHJ-mT-1oE" secondAttribute="centerX" id="0ss-9J-zcl"/>
                             <constraint firstItem="6Rq-HB-C8j" firstAttribute="width" secondItem="LQb-MB-ZAV" secondAttribute="width" multiplier="0.120773" id="1ad-7C-jXz"/>
+                            <constraint firstItem="DEY-gD-60H" firstAttribute="trailing" secondItem="oHJ-mT-1oE" secondAttribute="trailing" id="KFg-vp-XjT"/>
                             <constraint firstItem="DEY-gD-60H" firstAttribute="trailing" secondItem="oHJ-mT-1oE" secondAttribute="trailing" id="LLj-FG-ZPi"/>
+                            <constraint firstAttribute="bottom" secondItem="DEY-gD-60H" secondAttribute="bottom" id="X3F-ZH-0vo"/>
                             <constraint firstItem="oHJ-mT-1oE" firstAttribute="bottom" secondItem="6Rq-HB-C8j" secondAttribute="bottom" constant="17" id="gUc-Gk-cRn"/>
                             <constraint firstAttribute="bottom" secondItem="DEY-gD-60H" secondAttribute="bottom" id="glv-4o-tK1"/>
                             <constraint firstItem="DEY-gD-60H" firstAttribute="top" secondItem="LQb-MB-ZAV" secondAttribute="top" id="lLF-eB-9Y6"/>
                             <constraint firstItem="DEY-gD-60H" firstAttribute="leading" secondItem="oHJ-mT-1oE" secondAttribute="leading" id="s11-yF-CLJ"/>
                             <constraint firstItem="6Rq-HB-C8j" firstAttribute="height" secondItem="LQb-MB-ZAV" secondAttribute="height" multiplier="0.0558036" id="ua6-9n-NDZ"/>
+                            <constraint firstItem="DEY-gD-60H" firstAttribute="top" secondItem="LQb-MB-ZAV" secondAttribute="top" id="y87-B5-jQ5"/>
+                            <constraint firstItem="DEY-gD-60H" firstAttribute="leading" secondItem="oHJ-mT-1oE" secondAttribute="leading" id="zjV-5W-GKF"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="qSy-Wj-jwc"/>
